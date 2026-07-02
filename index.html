@@ -768,7 +768,7 @@ function renderQuestion(){
   const cardsHtml = options.map((o, i) => {
     const forceText = q.key === 'gebruik' || q.key === 'budget' || o.value === 'geen' || o.value === 0;
     const iconHtml = (!forceText && o.image)
-      ? ''
+      ? '<img src="' + o.image + '" alt="' + o.label + '">'
       : (!forceText ? getTileIcon(q.key, o.value) : '');
     const hasVisual = !forceText && !!(o.image || iconHtml);
     return (
@@ -978,7 +978,7 @@ function renderResults(){
         (i === 0 ? '<span class="best-badge">Beste match</span>' : "") +
         '<div class="result-top">' +
           '<div class="result-photo">' + (bike.image
-            ? '' +
+            ? '<img src="' + bike.image + '" alt="' + bike.naam + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
               '<div class="bike-icon-fallback">' + bikeIcon() + '</div>'
             : bikeIcon()
           ) + '</div>' +
