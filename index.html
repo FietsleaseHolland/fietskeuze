@@ -843,6 +843,8 @@ function renderQuestion(){
       renderQuestion();
     }
   });
+
+  if(typeof window.__flhSendHeight === "function") window.__flhSendHeight();
 }
 
 function scoreBike(bike){
@@ -1045,6 +1047,8 @@ function renderResults(){
     updateRoad();
     renderQuestion();
   });
+
+  if(typeof window.__flhSendHeight === "function") window.__flhSendHeight();
 }
 
 updateRoad();
@@ -1054,14 +1058,30 @@ renderQuestion();
 // Stuur hoogte naar parent zodat iframe meeschaalt
 (function(){
   function sendHeight(){
-    var h = document.documentElement.scrollHeight;
+    var h = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight
+    );
     if(window.parent && window.parent !== window){
       window.parent.postMessage({type:'flh-resize', height: h}, '*');
     }
   }
-  // Bij elke DOM-wijziging hoogte doorsturen
+  // Beschikbaar maken zodat renderQuestion()/renderResults() direct na een DOM-update
+  // ook zelf een verse hoogte kunnen doorsturen (niet enkel wachten op de ResizeObserver).
+  window.__flhSendHeight = sendHeight;
+
+  // Bij elke DOM-wijziging (nieuwe vraag, resultaten, etc.) hoogte doorsturen
   var ro = new ResizeObserver(sendHeight);
   ro.observe(document.body);
+
+  // Extra vangnet: afbeeldingen (typekaarten/productfoto's) en fonts kunnen ná de
+  // eerste render pas laden en zo de hoogte alsnog laten veranderen. Daarom ook op
+  // load-events en met een paar herhaalde timers de hoogte opnieuw doorsturen.
+  window.addEventListener('load', sendHeight);
+  document.addEventListener('DOMContentLoaded', sendHeight);
+  window.addEventListener('resize', sendHeight);
+  [50, 150, 300, 600, 1000, 2000].forEach(function(ms){ setTimeout(sendHeight, ms); });
+
   sendHeight();
 })();
 </script>
