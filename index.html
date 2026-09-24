@@ -40,11 +40,36 @@
   }
   @media (min-width: 1020px) {
     .app { max-width: 1240px; }
-    .bike-list { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; align-items: stretch; padding-top: 14px; }
-    .result-card { margin-top: 0 !important; display: flex; flex-direction: column; padding: 22px; }
-    .result-top { flex-direction: column; align-items: stretch; gap: 14px; }
-    .result-photo { width: 100%; height: 180px; flex: none; }
+    .bike-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      align-items: start;
+      padding-top: 14px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .result-card {
+      margin-top: 0 !important;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .result-top {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .result-photo {
+      width: 100% !important;
+      height: 200px !important;
+      flex: 0 0 200px !important;
+    }
     .result-info { padding-top: 0; }
+    .result-divider { margin: 0 0 12px; }
+    .result-cta { margin-bottom: 14px; }
   }
 
   /* ─── Progress bar ─── */
@@ -225,7 +250,7 @@
     width: 148px; height: 110px;
     border-radius: var(--r);
     overflow: hidden;
-    background: var(--bg-subtle);
+    background: #fff;
     border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
     padding: 8px;
@@ -290,6 +315,73 @@
   }
   .spec-tag--info { color: var(--ink-2); }
   .spec-tag--info::before { background: #ccc; }
+
+  /* ─── Persoonlijk advies blok ─── */
+  .advice-block {
+    margin-top: 32px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    background: #fff;
+  }
+  .advice-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .advice-sub {
+    font-size: 13px;
+    color: var(--ink-2);
+    margin: 0 0 20px;
+    max-width: 52ch;
+  }
+  .advice-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  @media (min-width: 600px) {
+    .advice-options { flex-direction: row; gap: 16px; }
+  }
+  .advice-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color .15s;
+  }
+  .advice-option:hover { border-color: var(--brand); }
+  .advice-icon {
+    flex: 0 0 auto;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--bg-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand);
+  }
+  .advice-icon svg { width: 18px; height: 18px; }
+  .advice-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .advice-label {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .advice-detail {
+    font-size: 12px;
+    color: var(--ink-2);
+  }
 
   /* ─── Restart ─── */
   .restart-row { margin-top: 20px; }
@@ -964,6 +1056,30 @@ function renderResults(){
       '<div class="title-row" style="margin-bottom:18px;"><div class="title-bar"></div><div><p class="results-eyebrow">Jouw advies</p><p class="results-title">Deze fietsen passen bij jou</p></div></div>' +
       noteHtml +
       '<div class="bike-list">' + bikesHtml + '</div>' +
+      '<div class="advice-block">' +
+        '<p class="advice-title">Niet gevonden wat je zocht?</p>' +
+        '<p class="advice-sub">Wij helpen je graag persoonlijk verder — bel ons of bezoek een aangesloten fietsenmaker bij jou in de buurt.</p>' +
+        '<div class="advice-options">' +
+          '<a class="advice-option" href="tel:0859022111">' +
+            '<div class="advice-icon">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.18 6.18l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"></path></svg>' +
+            '</div>' +
+            '<div class="advice-text">' +
+              '<span class="advice-label">Bel ons</span>' +
+              '<span class="advice-detail">085 - 90 22 111 &mdash; ma t/m vr 9:00&ndash;17:00</span>' +
+            '</div>' +
+          '</a>' +
+          '<a class="advice-option" href="https://www.fietsleaseholland.nl/partners" target="_top">' +
+            '<div class="advice-icon">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>' +
+            '</div>' +
+            '<div class="advice-text">' +
+              '<span class="advice-label">Vind een dealer</span>' +
+              '<span class="advice-detail">Bekijk onze aangesloten fietsenmakers op de kaart</span>' +
+            '</div>' +
+          '</a>' +
+        '</div>' +
+      '</div>' +
       '<div class="restart-row" style="display:flex; gap:12px; flex-wrap:wrap;">' +
         '<button class="back-btn" id="resultsBackBtn">&larr; Vorige vraag</button>' +
         '<button class="restart-btn" id="restartBtn">Opnieuw beginnen</button>' +
